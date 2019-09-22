@@ -12,30 +12,61 @@ function bindEventListeners (dots) {
     // BIND YOUR EVENT LISTENERS HERE
     // The first one is provided for you
     dots[i].addEventListener('contextmenu', makeGreen)
+    dots[i].addEventListener('click', makeBlue)
+    dots[i].addEventListener('dblclick', hide)
   }
 }
 
-function makeGreen (evt) {
-  evt.preventDefault()
-  evt.target.classList.toggle('green')
-  updateCounts()
+function makeGreen (e) {
+  e.preventDefault()
+  e.target.classList.toggle('green')
+  updateCounts(makeGreen.name)
 }
 
+function makeBlue (e) {
+  e.preventDefault()
+  e.target.classList.toggle('blue')
+  updateCounts(makeBlue.name)
+}
+
+function hide (e) {
+  e.preventDefault()
+  e.target.classList.toggle('invisible')
+  updateCounts(hide.name)
+}
 // CREATE FUNCTION makeBlue HERE
 
 // CREATE FUNCTION hide HERE
-
-function updateCounts () {
-  var totals = {
-    blue: 0,
-    green: 0,
-    invisible: 0
-  }
+var totals = {
+  blue: 0,
+  green: 0,
+  invisible: 0
+}
+function updateCounts (addVal) {
+  //console.trace()
+  
   
   // WRITE CODE HERE TO COUNT BLUE, GREEN, AND INVISIBLE DOTS
-
+  switch(addVal){
+    case 'makeGreen':
+      totals.green++
+      break
+    case 'makeBlue':
+      totals.blue++
+      break
+    case 'hide':
+      totals.invisible++
+      totals.blue = totals.blue - 2
+      break
+    default:
+      console.log("Error")
+      break;
+  }
+  //use time out to work around the dblclick == 2x left click
+  setTimeout(function(){
+    displayTotals(totals)
+  }, 200)
   // Once you've done the counting, this function will update the display
-  displayTotals(totals)
 }
 
 function displayTotals (totals) {
